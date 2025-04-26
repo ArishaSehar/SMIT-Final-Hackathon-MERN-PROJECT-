@@ -1,13 +1,16 @@
-import mongoose from 'mongoose';
+import 'dotenv/config'
+import mongoose from 'mongoose'
+import chalk from "chalk";
 
-const connectDB = async () => {
-  try {
-    await mongoose.connect(process.env.MONGO_URI);
-    console.log('MongoDB Connected');
-  } catch (error) {
-    console.error(error);
-    process.exit(1);
-  }
-};
 
-export default connectDB;
+const url = process.env.MONGODB_URL
+const connectToDb = async()=>{
+    try{
+        await mongoose.connect(url,{dbName:"final-hackathon"})
+        console.log(chalk.bgGreen.white('connected to MongoDB'));
+    }
+    catch(error){
+        console.error("error in connecting to db",error)
+    }
+}
+export default connectToDb
