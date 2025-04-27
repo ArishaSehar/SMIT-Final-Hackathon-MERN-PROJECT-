@@ -1,15 +1,26 @@
-import express from "express"
+import express from "express";
+import dotenv from "dotenv"
+import cors from "cors";
+import connectDB from "./db/db.js"
 import path from "path"
-const app = express()
-const port = 3000
+
+// const authRoutes = require('./routes/authRoutes');
+import authRoutes from "./routes/authRoutes.js"
+// const taskRoutes = require('./routes/taskRoutes');
+import taskRoutes from "./routes/taskRoutes.js"
+
 
 const __dirname = path.resolve();
 app.use(express.static(path.join(__dirname, 'dist')));
+dotenv.config();
+connectDB();
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+app.use('/api/auth', authRoutes);
+app.use('/api/tasks', taskRoutes);
+
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
